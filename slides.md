@@ -45,18 +45,18 @@ layout: section
 
 4層のキャッシュが存在する
 
-| Mechanism                                                                                          | What                                      | Where  | Purpose                                  | Duration                 |
-| -------------------------------------------------------------------------------------------------- | ----------------------------------------- | ------ | ---------------------------------------- | ------------------------ |
-| **Request Memoization**                                                                            | 関数の戻り値                              | Server | React Component treeにおけるdataの再利用 | リクエストごと           |
-| <span class="font-bold" v-mark="{ at: 1, color: 'orange', type: 'circle'}">Data Cache</span>       | APIレスポンスやデータベースアクセスの結果 | Server | ユーザーやデプロイをまたぐデータの再利用 | 永続化 (revalidate可)    |
-| <span class="font-bold" v-mark="{ at: 1, color: 'orange', type: 'circle'}">Full Route Cache</span> | HTMLやRSC payload                         | Server | レンダリングコストやパフォーマンスの向上 | 永続化 (revalidate可)    |
-| **Router Cache**                                                                                   | RSC Payload                               | Client | ナビゲーションごとのリクエスト削減       | ユーザーセッション・時間 |
+| Mechanism                                                                                                           | What                        | Where  | Purpose                                  | Duration                 |
+| ------------------------------------------------------------------------------------------------------------------- | --------------------------- | ------ | ---------------------------------------- | ------------------------ |
+| **Request Memoization**                                                                                             | 関数の戻り値                | Server | React Component treeにおけるdataの再利用 | リクエストごと           |
+| <span v-mark="{ at: 1, color: 'orange', type: 'circle'}"><strong>Data Cache</strong></span>                         | `fetch()`やDBアクセスの結果 | Server | ユーザーやデプロイをまたぐデータの再利用 | 永続化 (revalidate可)    |
+| <span class="font-bold" v-mark="{ at: 1, color: 'orange', type: 'circle'}"><strong>Full Route Cache</strong></span> | HTMLやRSC payload           | Server | レンダリングコストやパフォーマンスの向上 | 永続化 (revalidate可)    |
+| **Router Cache**                                                                                                    | RSC Payload                 | Client | ナビゲーションごとのリクエスト削減       | ユーザーセッション・時間 |
 
 ---
 
 # v14以前のキャッシュのデフォルト
 
-デフォルトで積極的にキャッシュし、初見殺しな部分が見られた
+デフォルトで積極的にキャッシュ
 
 - Router Cache: 有効期間がデフォルトで30s or 5mと長め
 - Data Cache: `fetch()`はデフォルトでキャッシュが有効
@@ -64,6 +64,12 @@ layout: section
   - Router Handlerの`GET`がキャッシュ可能かつデフォルトで有効
   - ページやレイアウトはデフォルトでキャッシュが有効
 - etc...
+
+<br>
+
+### 筆者の意見
+
+<span v-mark="{ at: 1, color: 'red', type: 'underline'}" class="font-bold">キャッシュにおける**初見殺し**な部分があった</span>
 
 ---
 
@@ -75,13 +81,23 @@ layout: section
 - Data Cache: `fetch()`のデフォルトが`cache: "no-store"`に変更
 - Router Handlerの`GET`がデフォルトでキャッシュされなくなった
 
+<br>
+
+### 筆者の意見
+
 <span v-mark="{ at: 1, color: 'red', type: 'underline'}" class="font-bold">キャッシュにおける初見殺しが緩和された</span>
 
 ---
 layout: fact
 ---
 
-## おそらくこの変更があったから<br>Next Confを待たずにv15になった...？
+## おそらく今回破壊的変更があったから<br>Next Confを待たずにv15になった...？
+
+---
+layout: fact
+---
+
+## ではなぜこのタイミングだったのか？<br>解: PPRの実装が進んだから
 
 ---
 layout: section
@@ -93,20 +109,95 @@ layout: section
 
 # Static/Dynamic Rendering
 
-TBW
+従来におけるSSR/SSG/ISG相当と考えるとわかりやすい
+
+- Static Rendering: ページを事前に生成、revalidate可能
+- Dynamic Rendering: ページをリクエスト時に生成
+
+---
+transition: fade
+---
+
+# PPRとは
+
+「可能な限りStaticに、部分的にDynamicに」を可能にするレンダリングモデル
+
+- PPR: Partial Pre-Rendering(部分的な事前レンダリング)
+- Routeは基本Static Rendering、一部Suspense境界内をDynamic Renderingにすることが可能
+- パフォーマンスとシンプルな設計が両立
+- 15.0.0時点ではexperimental、実装進行中
+  - (Next.js側の実装がとても大変)
+
+<br>
+
+### 筆者の意見
+
+考える粒度がページ単位からSuspense境界単位になり、<span v-mark="{ at: 1, color: 'red', type: 'underline'}" class="font-bold">よりReactらしい設計</span>
 
 ---
 
 # PPRとは
 
-TBW
+v14系ではexperimentalフラグを有効にすると、全ページでPPRが有効になった
+
+```ts
+// next.config.ts
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  experimental: {
+    ppr: true, // v14系ではboolean
+  },
+};
+
+export default nextConfig;
+```
+
+---
+transition: fade
+---
+
+# PPR incrementalオプション
+
+v15.0.0-rc.0から`incremental`オプションが追加された
+
+```ts
+// next.config.ts
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  experimental: {
+    ppr: "incremental",
+  },
+};
+
+export default nextConfig;
+```
 
 ---
 
 # PPR incrementalオプション
 
-PPRはページをStatic Renderingしつつ、一部Suspense境界内をDynamic Rendering
+Route単位で`experimental_ppr`が`true`の時のみPPRが有効化
 
-- PPRはページをStatic Renderingしつつ、一部Suspense境界内をDynamic Rendering
+```tsx
+// app/page.tsxなど
+export const experimental_ppr = true;
+```
 
-TBW
+---
+layout: section
+---
+
+# まとめ
+
+---
+
+# v15の変更まとめ
+
+筆者が注目してる点は以下2つ
+
+- キャッシュのデフォルト設定が変更され、初見殺しが緩和された
+- PPRの実装が進み、段階的導入が可能となった
+
+App Routerがより初学者に優しく・シンプルな設計になると期待できそう
