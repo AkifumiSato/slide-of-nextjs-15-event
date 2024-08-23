@@ -122,6 +122,16 @@ transition: fade
 
 「可能な限りStaticに、部分的にDynamicに」を可能にするレンダリングモデル
 
+![PPR](/ppr.png)
+
+---
+transition: fade
+---
+
+# PPRとは
+
+「可能な限りStaticに、部分的にDynamicに」を可能にするレンダリングモデル
+
 - PPR: Partial Pre-Rendering(部分的な事前レンダリング)
 - Routeは基本Static Rendering、一部Suspense境界内をDynamic Renderingにすることが可能
 - パフォーマンスとシンプルな設計が両立
@@ -137,6 +147,29 @@ transition: fade
 ---
 
 # PPRとは
+
+PPRにおける注意点
+
+- CDNと相性が悪い
+- HTTP Status Codeに依存した監視などができない
+  - (実はPPRに限った話ではないが、より影響が顕著)
+- Next.js側の実装が大変なためまだ不安定
+
+---
+
+# PPRの参考資料
+
+より詳細な内容については筆者の過去記事を参照
+
+https://zenn.dev/akfm/articles/nextjs-partial-pre-rendering
+
+<div class="flex justify-center pt-5">
+  <img width="400" src="/zenn-ppr-article.png" alt="PPRの記事">
+</div>
+
+---
+
+# PPRの有効化
 
 v14系ではexperimentalフラグを有効にすると、全ページでPPRが有効になった
 
@@ -200,4 +233,4 @@ layout: section
 - キャッシュのデフォルト設定が変更され、初見殺しが緩和された
 - PPRの実装が進み、段階的導入が可能となった
 
-App Routerがより初学者に優しく・シンプルな設計になると期待できそう
+App Routerがより<span v-mark="{ at: 1, color: 'red', type: 'underline'}" class="font-bold">初学者に優しく・シンプルな設計になると期待</span>できそう
