@@ -91,7 +91,7 @@ layout: section
 
 # 「なぜもっと早く変更しなかったのか？」
 
-[Jimmy Laiのツイート](https://x.com/feedthejim/status/1792973728512426304)を要約
+[Jimmy Lai氏のツイート](https://x.com/feedthejim/status/1792973728512426304)を要約
 
 - デフォルトのキャッシュ挙動の変更は、2023/11頃にはすでに議論が始まっていた
   - 問題はどうやってパフォーマンスを損ねずに実現するか
