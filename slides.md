@@ -50,7 +50,7 @@ layout: section
 | **Request Memoization**                                                                                             | 関数の戻り値                | Server | React Component treeにおけるdataの再利用 | リクエストごと           |
 | <span v-mark="{ at: 1, color: 'orange', type: 'circle'}"><strong>Data Cache</strong></span>                         | `fetch()`やDBアクセスの結果 | Server | ユーザーやデプロイをまたぐデータの再利用 | 永続化 (revalidate可)    |
 | <span class="font-bold" v-mark="{ at: 1, color: 'orange', type: 'circle'}"><strong>Full Route Cache</strong></span> | HTMLやRSC payload           | Server | レンダリングコストやパフォーマンスの向上 | 永続化 (revalidate可)    |
-| **Router Cache**                                                                                                    | RSC Payload                 | Client | ナビゲーションごとのリクエスト削減       | ユーザーセッション・時間 |
+| <span v-mark="{ at: 1, color: 'orange', type: 'circle'}"><strong>Router Cache</strong></span>                       | RSC Payload                 | Client | ナビゲーションごとのリクエスト削減       | ユーザーセッション・時間 |
 
 ---
 
@@ -88,16 +88,18 @@ layout: section
 <span v-mark="{ at: 1, color: 'red', type: 'underline'}" class="font-bold">キャッシュにおける初見殺しが緩和された</span>
 
 ---
-layout: fact
----
 
-## おそらく今回破壊的変更があったから<br>Next Confを待たずにv15になった...？
+# 「なぜもっと早く変更しなかったのか？」
 
----
-layout: fact
----
+[Jimmy Laiのツイート](https://x.com/feedthejim/status/1792973728512426304)を要約
 
-## ではなぜこのタイミングだったのか？<br>解: PPRの実装が進んだから
+- デフォルトのキャッシュ挙動の変更は、2023/11頃にはすでに議論が始まっていた
+  - 問題はどうやってパフォーマンスを損ねずに実現するか
+  - Next.jsの哲学としてデフォルトで高いパフォーマンスが実現できることは非常に重要
+- PPRがデフォルトになれば全て解決する
+  - PPRは現在experimentalだが、今後安定したらデフォルトになる予定
+- PPRの設計や実装が進み、Next.jsとしての方針が固まった
+  - デフォルトのキャッシュ挙動を変更しても良いと判断できるようになった
 
 ---
 layout: section
