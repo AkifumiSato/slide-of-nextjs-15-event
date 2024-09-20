@@ -236,3 +236,20 @@ layout: section
 - PPRの実装が進み、段階的導入が可能となった
 
 App Routerがより<span v-mark="{ at: 1, color: 'red', type: 'underline'}" class="font-bold">初学者に優しく・シンプルな設計になると期待</span>できそう
+
+---
+
+# 余談: 直近のNext.jsの動向
+
+2024/9~10月のNext.jsの動向推察
+
+- 9月以降、v14.2.xのpatchリリースが続いてる
+  - patchリリースに新機能や改善が盛り込まれ、それが起因してバグ混入が続いてる
+    - v14.2.8 [#69769](https://github.com/vercel/next.js/issues/69769)
+    - v14.2.12 [#70213](https://github.com/vercel/next.js/issues/70213)
+- 最終版RCのリリースが近そう（from [Jimmy Lai氏のツイート](https://x.com/feedthejim/status/1829569083777437745)）
+  - Next.jsはReact19の安定を待たないことにした
+  - `experimental.dynamicIO`（[#67571](https://github.com/vercel/next.js/pull/67571)）など新たな機能が盛り込まれる
+- Next Conf（10/24）
+  - v15のGA発表？
+  - 例年通りなら何かしら目を引くような発表があるはず
