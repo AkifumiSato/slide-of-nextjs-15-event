@@ -249,7 +249,8 @@ App Routerがより<span v-mark="{ at: 1, color: 'red', type: 'underline'}" clas
     - v14.2.12 [#70213](https://github.com/vercel/next.js/issues/70213)
 - 最終版RCのリリースが近そう（from [Jimmy Lai氏のツイート](https://x.com/feedthejim/status/1829569083777437745)）
   - Next.jsはReact19の安定を待たないことにした
-  - `experimental.dynamicIO`（[#67571](https://github.com/vercel/next.js/pull/67571)）など新たな機能が盛り込まれる
+  - `experimental.dynamicIO`など新たな機能が盛り込まれる [#67571](https://github.com/vercel/next.js/pull/67571)
+  - dynamic functions（`cookies()`など）が非同期に変更されるPRが進行中 [#68812](https://github.com/vercel/next.js/pull/68812)
 - Next Conf（10/24）
   - v15のGA発表？
   - 例年通りなら何かしら目を引くような発表があるはず
