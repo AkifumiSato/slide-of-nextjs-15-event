@@ -111,10 +111,10 @@ layout: section
 
 # Static/Dynamic Rendering
 
-従来におけるSSR/SSG/ISG相当と考えるとわかりやすい
+（厳密には異なる部分はあるが）従来におけるSSR/SSG/ISR相当と考えるとわかりやすい
 
-- Static Rendering: ページを事前に生成、revalidate可能
-- Dynamic Rendering: ページをリクエスト時に生成
+- Static Rendering: SSG/ISR相当。ページを事前に生成、revalidate可能
+- Dynamic Rendering: SSR相当。ページをリクエスト時に生成
 
 ---
 transition: fade
