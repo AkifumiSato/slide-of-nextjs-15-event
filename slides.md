@@ -24,9 +24,9 @@ mdc: true
 
 # Next.js v15.0.0-rc.0での更新内容
 
-現在v15はReact19のリリース待ちの状態
+~~v15はReact19のリリース待ちの状態~~
 
-- React19サポート
+- ~~React19サポート~~
 - <span v-mark="{ at: 1, color: 'orange', type: 'underline'}">キャッシュのデフォルトを一部変更</span>
 - <span v-mark="{ at: 1, color: 'orange', type: 'underline'}">PPRのincrementalオプションが追加</span>
 - `next/after`の追加
